@@ -144,7 +144,31 @@ namespace BankClient
 
         private void Transfer(string? accountNumber)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("\n--- Transfer Money ---");
+
+            //enter the account number that you want to transfer money to
+            Console.WriteLine("Enter account number to transfer money to: ");
+            string toAccount = Console.ReadLine();
+
+            //ask for amount to transfer
+            Console.WriteLine("Amount to transfer: ");
+            string amount = Console.ReadLine();
+
+            //generate transfer token
+            string token = GenerateTransferToken();
+
+            //send message to the server
+            string message = $"TRANSFER|{accountNumber}|{toAccount}|{amount}|{token}";
+            SendMessage(message);
+
+            //get server response
+            string response = ReceiveMessage();
+
+            //show servers reponse
+            Console.WriteLine("\nServer Response: \n" + response);
+
+            //display token number to client as they must give it to receipent
+            Console.WriteLine($"\nTransfer Token: {token}\n Give this token number to the recipent so they can accept the money transfer.");
         }
 
         private void Withdraw(string? accountNumber)
