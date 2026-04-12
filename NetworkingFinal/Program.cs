@@ -105,12 +105,36 @@ namespace NetworkingFinal
             }
         }
 
+        private static string HandleTransfer(string[] parts)
+        {
+            //sending format = "TRANSFER|{accountNumber}|{toAccount}|{amount}|{token}"
+            throw new NotImplementedException();
+        }
+
+        private static string HandleWithdraw(string[] parts)
+        {
+            //sending format = "WITHDRAW|{accountNumber}|{amount}"
+            throw new NotImplementedException();
+        }
+
+        private static string HandleDeposit(string[] parts)
+        {
+            //sending format = "DEPOSIT|{accountNumber}|{cheque}|{amount}"
+            throw new NotImplementedException();
+        }
+
+        private static string HandleBalance(string[] parts)
+        {
+            //sending format = "BALANCE|{accountNumber}"
+            throw new NotImplementedException();
+        }
 
         public static string HandleLogin(string[] parts)
         {
+            //sending format = "LOGIN|{accountNumber}|{password}"
 
             string accountNumber = parts[1];
-            //string referenceNumber = parts[2];
+
             string password = parts[3];
 
             //check the list of accounts for matching account number
@@ -119,8 +143,7 @@ namespace NetworkingFinal
             if (user == null)
                 return "ERROR: Invalid account number";
 
-            //if (user.ReferenceNumber != referenceNumber)
-                //return "ERROR: Invalid reference number";
+           
 
             //if a valid account and reference number is returned, then proceed to check the password
             if (user.Password != password)
