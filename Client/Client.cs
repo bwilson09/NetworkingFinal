@@ -91,7 +91,7 @@ namespace BankClient
             Console.WriteLine(response);
 
             //if login was successful take client to the logged in menu
-            if(response.Contains("Succesfully logged in"))
+            if(response.Contains("SUCCESS"))
             {
                 LoggedInMenu(accountNumber);
             }

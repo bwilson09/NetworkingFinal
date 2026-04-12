@@ -120,7 +120,34 @@ namespace NetworkingFinal
         private static string HandleDeposit(string[] parts)
         {
             //sending format = "DEPOSIT|{accountNumber}|{cheque}|{amount}"
-            throw new NotImplementedException();
+            
+            string accountNumber= parts[1];
+            string chequeNumber = parts[2];
+            string amountString = parts[3];
+
+            //validate the amount
+            if(!decimal.TryParse(amountString, out decimal amount) || amount <= 0)
+            {
+                return "ERROR: Invalid deposit amount.";
+
+            }
+
+            //find the corresponding account
+            var account = Accounts.FirstOrDefault(a => a.AccountNumber == accountNumber);
+            if (account == null)
+            {
+                return "ERROR: Account not found.";
+            }
+
+            //add the deposited amount to their account
+            account.Balance += amount;
+
+            //save the update balance to the file
+            SaveAccount();
+
+            //send back success message
+            return "SUCCESS: Deposit successful.";
+
         }
 
         private static string HandleBalance(string[] parts)
@@ -151,7 +178,7 @@ namespace NetworkingFinal
 
             //if all checks are passed, then log the user in by setting IsLoggedIn to true
             user.IsLoggedIn = true;
-            return "Successfully logged in";
+            return "SUCCESS: Successfully logged in";
             
         }
 
