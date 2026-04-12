@@ -12,5 +12,7 @@ namespace NetworkingFinal
         public string Password { get; set; }
         public string ReferenceNumber { get; set; }
         public decimal Balance { get; set; }
+
+        public bool IsLoggedIn { get; set; }
     }
 }
