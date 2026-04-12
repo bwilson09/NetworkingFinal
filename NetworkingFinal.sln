@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36930.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "NetworkingFinal\Server.csproj", "{C5132127-BB3F-423B-A340-2098C6E35B89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankServer", "NetworkingFinal\BankServer.csproj", "{C5132127-BB3F-423B-A340-2098C6E35B89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{4437EE11-EB7A-49F2-8626-9A827DF5D9C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankClient", "Client\BankClient.csproj", "{4437EE11-EB7A-49F2-8626-9A827DF5D9C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppData", "AppData", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		accountStarter.json = accountStarter.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
