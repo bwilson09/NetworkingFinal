@@ -119,6 +119,7 @@ namespace BankClient
                         break;
                         case "2":
                         //deposit cheque
+                        Deposit(accountNumber);
                         break;
                         case "3":
                         //withdraw
@@ -136,6 +137,25 @@ namespace BankClient
                 }
 
             }
+        }
+
+        private void Deposit(string? accountNumber)
+        {
+            Console.WriteLine("\n--- Deposit a Cheque ---");
+
+            //ask for amount to deposit
+            Console.WriteLine("Enter cheque amount to deposit: ");
+            string amount = Console.ReadLine();
+
+            //create message to send to the server
+            string message = $"DEPOSIT|{accountNumber}|{amount}";
+            SendMessage(message);
+
+            //get server response
+            string response = ReceiveMessage();
+
+            //show servers reponse
+            Console.WriteLine("\nServer Response: \n" + response);
         }
 
         private void CheckBalance(string? accountNumber)
