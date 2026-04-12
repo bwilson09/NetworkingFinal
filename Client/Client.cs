@@ -170,12 +170,15 @@ namespace BankClient
         {
             Console.WriteLine("\n--- Deposit a Cheque ---");
 
+            //ask for cheque number
+            Console.WriteLine("Enter cheque number: ");
+            string cheque = Console.ReadLine();
             //ask for amount to deposit
             Console.WriteLine("Enter cheque amount to deposit: ");
             string amount = Console.ReadLine();
 
             //create message to send to the server
-            string message = $"DEPOSIT|{accountNumber}|{amount}";
+            string message = $"DEPOSIT|{accountNumber}|{cheque}|{amount}";
             SendMessage(message);
 
             //get server response
@@ -289,6 +292,13 @@ namespace BankClient
             }
 
             return new string(buffer);
+        }
+
+        //method to generate a token transfer
+        //must be 12 char alphanumeric and unique
+        private string GenerateTransferToken()
+        {
+
         }
     }
 }
