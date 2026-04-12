@@ -298,7 +298,16 @@ namespace BankClient
         //must be 12 char alphanumeric and unique
         private string GenerateTransferToken()
         {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random rand = new Random();
+            char[] buffer = new char[12];
 
+            for (int i = 0; i < chars.Length; i++)
+            {
+                buffer[i] = chars[rand.Next(chars.Length)];
+            }
+
+            return new string(buffer);
         }
     }
 }
