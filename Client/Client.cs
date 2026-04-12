@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -123,9 +124,11 @@ namespace BankClient
                         break;
                         case "3":
                         //withdraw
+                        Withdraw(accountNumber);
                         break;
                         case "4":
                         //transfer
+                        Transfer(accountNumber);
                         break;
                         case "5":
                         Console.WriteLine("Logging out...");
@@ -137,6 +140,30 @@ namespace BankClient
                 }
 
             }
+        }
+
+        private void Transfer(string? accountNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Withdraw(string? accountNumber)
+        {
+            Console.WriteLine("\n--- Withdraw ---");
+
+            //ask for amount wanting to withdraw
+            Console.WriteLine("Enter amount to withdraw: ");
+            string amount = Console.ReadLine();
+
+            //send message to server
+            string message = $"WITHDRAW|{accountNumber}|{amount}";
+            SendMessage(message);
+
+            //get server response
+            string response = ReceiveMessage();
+
+            //show servers reponse
+            Console.WriteLine("\nServer Response: \n" + response);
         }
 
         private void Deposit(string? accountNumber)
