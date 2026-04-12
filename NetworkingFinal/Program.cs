@@ -24,7 +24,7 @@ namespace NetworkingFinal
         {
             try
             {
-                IPAddress ip = IPAddress.Parse("192.168.219.19");
+                IPAddress ip = IPAddress.Parse("10.0.0.80");
                 IPEndPoint localIP = new IPEndPoint(ip, 10001);
 
                 Socket listener = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -61,7 +61,7 @@ namespace NetworkingFinal
                     string trimmedData = data.Replace("<EOF>", "").Trim();
                     response = ProcessCommand(trimmedData);
 
-                    byte[] msg = Encoding.ASCII.GetBytes(response);
+                    byte[] msg = Encoding.ASCII.GetBytes(response + "<EOF>");
                     handler.Send(msg);
                 }
             }
@@ -162,7 +162,7 @@ namespace NetworkingFinal
 
             string accountNumber = parts[1];
 
-            string password = parts[3];
+            string password = parts[2];
 
             //check the list of accounts for matching account number
             var user = Accounts.FirstOrDefault(a => a.AccountNumber == accountNumber);

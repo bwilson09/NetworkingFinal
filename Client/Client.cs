@@ -277,10 +277,12 @@ namespace BankClient
         //for sending a message string to the server over the network stream
         private void SendMessage(string message)
         {
+            //append <EOF> to message
+            string finalMessage = message + "<EOF>";
             //convert message to bytes
-            byte[] data = Encoding.UTF8.GetBytes(message);
+            byte[] data = Encoding.UTF8.GetBytes(finalMessage);
 
-            //weite the bits to the stream
+            //write the bits to the stream
             _stream.Write(data, 0, data.Length);
         }
 
@@ -289,11 +291,24 @@ namespace BankClient
         {
             //buffer is the temporary storage for incoming bytes
             byte[] buffer = new byte[1024];
+            StringBuilder message = new StringBuilder();
 
-            int bytesRead= _stream.Read(buffer, 0, buffer.Length);
+            while (true)
+            {
+                int bytesRead = _stream.Read(buffer, 0, buffer.Length);
+                string chunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                message.Append(chunk);
 
-            //convert the bytes into a string
-            return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                if (message.ToString().Contains("<EOF>"))
+                    break;
+            }
+
+            //remove <EOF> before returning
+            return message.ToString().Replace("<EOF>", "");
+
+            
+
+          
         }
 
         //generate a radom, unique 9-digit account number
@@ -310,7 +325,7 @@ namespace BankClient
             Random rand = new Random();
             char[] buffer = new char[7];
 
-            for (int i = 0; i < chars.Length; i++)
+            for (int i = 0; i < buffer.Length; i++)
             {
                 buffer[i] = chars[rand.Next(chars.Length)];
             }
@@ -326,7 +341,7 @@ namespace BankClient
             Random rand = new Random();
             char[] buffer = new char[12];
 
-            for (int i = 0; i < chars.Length; i++)
+            for (int i = 0; i < buffer.Length; i++)
             {
                 buffer[i] = chars[rand.Next(chars.Length)];
             }
