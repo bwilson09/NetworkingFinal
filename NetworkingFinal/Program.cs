@@ -187,6 +187,9 @@ namespace NetworkingFinal
 
         public static void SaveAccount()
         {
+            //line to check/create the folder
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
             string json = JsonSerializer.Serialize(Accounts, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(path, json);
         }
