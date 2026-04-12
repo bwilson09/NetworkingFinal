@@ -63,7 +63,41 @@ namespace BankClient
             }
         }
 
+        //handles login process
         private void Login()
+        {
+            Console.WriteLine("\n--- Login ---");
+
+            //get clients account number
+            Console.WriteLine("Enter your account number: ");
+            string accountNumber= Console.ReadLine();
+
+            //client enters password
+            Console.WriteLine("Enter your password: ");
+            string password = Console.ReadLine();
+
+            //build the login message
+            //serverside will validate all login process stuff
+            string message = $"LOGIN|{accountNumber}|{password}";
+
+            //send this message to server
+            SendMessage(message);
+
+            //wait for servers response
+            string response = ReceiveMessage();
+
+            Console.WriteLine("\nServer Response: ");
+            Console.WriteLine(response);
+
+            //if login was successful take client to the logged in menu
+            if(response.Contains("Succesfully logged in"))
+            {
+                LoggedInMenu(accountNumber);
+            }
+
+        }
+
+        private void LoggedInMenu(string? accountNumber)
         {
             throw new NotImplementedException();
         }
@@ -95,7 +129,7 @@ namespace BankClient
             Console.WriteLine(response);
 
             //show client their account and refernce number
-            Console.WriteLine($"\nYour account number is: {accountNumber}");
+            Console.WriteLine($"\nYour account number is: {accountNumber} \nYou will need this number to login, please store it safely.");
             Console.WriteLine($"\nYour reference number is: {refNumber}");
         }
 
