@@ -76,5 +76,27 @@ namespace BankClient
                 Console.WriteLine("Connection failed: " + ex.ToString());
             }
         }
+
+        //for sending a message string to the server over the network stream
+        private void SendMessage(string message)
+        {
+            //convert message to bytes
+            byte[] data = Encoding.UTF8.GetBytes(message);
+
+            //weite the bits to the stream
+            _stream.Write(data, 0, data.Length);
+        }
+
+        //reads the response from the server
+        private string ReceiveMessage()
+        {
+            //buffer is the temporary storage for incoming bytes
+            byte[] buffer = new byte[1024];
+
+            int bytesRead= _stream.Read(buffer, 0, buffer.Length);
+
+            //convert the bytes into a string
+            return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+        }
     }
 }
