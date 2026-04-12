@@ -98,5 +98,27 @@ namespace BankClient
             //convert the bytes into a string
             return Encoding.UTF8.GetString(buffer, 0, bytesRead);
         }
+
+        //generate a radom, unique 9-digit account number
+        private string GenerateAccountNumber()
+        {
+            Random rand = new Random();
+            return rand.Next(100000000, 999999999).ToString();
+        }
+
+        //generate a unique 7-digit alphanumeric reference code
+        private string GenerateReferenceNumber()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random rand = new Random();
+            char[] buffer = new char[7];
+
+            for (int i = 0; i < chars.Length; i++)
+            {
+                buffer[i] = chars[rand.Next(chars.Length)];
+            }
+
+            return new string(buffer);
+        }
     }
 }
