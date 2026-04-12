@@ -50,15 +50,53 @@ namespace BankClient
                 {
                     case "1":
                         //login flow
+                        Login();
                         break;
                         case "2":
                         //account creation flow
+                        CreateAccount();
                         break;
                     default:
                         Console.WriteLine("Invalid choice. Please choose either 1 or 2.");
                         break;
                 }
             }
+        }
+
+        private void Login()
+        {
+            throw new NotImplementedException();
+        }
+
+        //handles the create account process
+        private void CreateAccount()
+        {
+            Console.WriteLine("\n--- Create New Account ---");
+
+            //generate the IDs
+            string accountNumber = GenerateAccountNumber();
+            string refNumber = GenerateReferenceNumber();
+
+            //ask client for a password
+            Console.WriteLine("Enter a password: ");
+            string password = Console.ReadLine();
+
+            //create message to send to the server
+            string message = $"CREATE|{accountNumber}|{refNumber}|{password}";
+
+            //send the message to the server
+            SendMessage(message);
+
+            //wait for the servers response
+            string response = ReceiveMessage();
+
+            //show the response
+            Console.WriteLine("\nServer Response: ");
+            Console.WriteLine(response);
+
+            //show client their account and refernce number
+            Console.WriteLine($"\nYour account number is: {accountNumber}");
+            Console.WriteLine($"\nYour reference number is: {refNumber}");
         }
 
         //method to handle the socket connection
