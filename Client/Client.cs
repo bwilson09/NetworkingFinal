@@ -115,6 +115,7 @@ namespace BankClient
                 {
                     case "1":
                         //check balance
+                        CheckBalance(accountNumber);
                         break;
                         case "2":
                         //deposit cheque
@@ -135,6 +136,21 @@ namespace BankClient
                 }
 
             }
+        }
+
+        private void CheckBalance(string? accountNumber)
+        {
+            Console.WriteLine("\n--- Check Balance ---");
+
+            //send the message to the server
+            string message = $"BALANCE|{accountNumber}";
+            SendMessage(message);
+
+            //get response and show to client
+            string response = ReceiveMessage();
+
+            Console.WriteLine("\nServer Response: \n" + response);
+            
         }
 
         //handles the create account process
