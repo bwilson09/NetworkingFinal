@@ -99,7 +99,42 @@ namespace BankClient
 
         private void LoggedInMenu(string? accountNumber)
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                Console.WriteLine("\n--- Account Menu ---");
+                Console.WriteLine("1. Check Balance");
+                Console.WriteLine("2. Deposit Cheque");
+                Console.WriteLine("3. Withdraw Amount");
+                Console.WriteLine("4. Transfer Amount");
+                Console.WriteLine("5. Logout");
+
+                Console.WriteLine("Choose an option: ");
+                string choice = Console.ReadLine();
+
+                switch (choice) 
+                {
+                    case "1":
+                        //check balance
+                        break;
+                        case "2":
+                        //deposit cheque
+                        break;
+                        case "3":
+                        //withdraw
+                        break;
+                        case "4":
+                        //transfer
+                        break;
+                        case "5":
+                        Console.WriteLine("Logging out...");
+                        return;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please enter a number from 1-5.");
+                        break;
+                }
+
+            }
         }
 
         //handles the create account process
