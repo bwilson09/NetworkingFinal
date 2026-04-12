@@ -8,7 +8,10 @@ namespace NetworkingFinal
 {
     public class BankServer
     {
-        private static string path = Path.Combine(AppContext.BaseDirectory, "AppData", "accountStarter.json");
+        private static string path = Path.Combine(
+    Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName,
+    "AppData",
+    "accountStarter.json");
 
         public static List<Account> Accounts = new List<Account>();
         public static int Main(string[] args)

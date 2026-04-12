@@ -1,8 +1,16 @@
-﻿[
+[
   {
     "AccountNumber": "104582736",
     "Password": "password",
     "ReferenceNumber": "A4D9K2P",
-    "Balance": 1000.00
+    "Balance": 1000.00,
+    "IsLoggedIn": false
+  },
+  {
+    "AccountNumber": "199277979",
+    "Password": "pass",
+    "ReferenceNumber": "HMAJYTT",
+    "Balance": 0,
+    "IsLoggedIn": false
   }
 ]
