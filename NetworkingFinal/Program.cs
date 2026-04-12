@@ -193,7 +193,7 @@ namespace NetworkingFinal
             string referenceNumber = parts[2];
             string password = parts[3];
 
-            if (!Accounts.Any(a => a.ReferenceNumber == referenceNumber))
+            if (Accounts.Any(a => a.ReferenceNumber == referenceNumber))
                 return "ERROR: Invalid reference number.";
 
             Accounts.Add(new Account
