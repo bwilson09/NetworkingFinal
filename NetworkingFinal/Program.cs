@@ -18,17 +18,19 @@ namespace NetworkingFinal
             return 0;
         }
 
+
+        //server starterup:
         public static void StartServer()
         {
             try
             {
                 IPAddress ip = IPAddress.Parse("192.168.219.19");
-                IPEndPoint localIP = new IPEndPoint(ip, 10001); // --> this needs to match the # on the client side
+                IPEndPoint localIP = new IPEndPoint(ip, 10001);
 
                 Socket listener = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 listener.Bind(localIP);
-                listener.Listen(10); //  -->10 indicates the number of connections that this socket can handle at the same time
+                listener.Listen(10); //  10 is the # of connections the server can handle
 
                 //wait for connection
                 Console.WriteLine("Waiting for a connection... ");
@@ -55,33 +57,143 @@ namespace NetworkingFinal
 
                     Console.WriteLine("Text Received : {0}", data);
 
-                    //response = "This is a response";
-                    if (data.ToLower().IndexOf("dog") > -1)
-                    {
-                        response = "I like dogs, chihuahuas are the way to go.";
-                    }
-
-                    if (data.Contains("pizza"))
-                    {
-                        response += "Pineapples on pizzas is okay";
-                    }
-
-                    if (response == null)
-                    {
-                        response = "This is a response to a null response";
-                    }
+                    //trim data string to remove the EOF tag and any whitespace in order to parse the values before calling processcommand function
+                    string trimmedData = data.Replace("<EOF>", "").Trim();
+                    response = ProcessCommand(trimmedData);
 
                     byte[] msg = Encoding.ASCII.GetBytes(response);
                     handler.Send(msg);
                 }
-
-
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
         }
+
+
+        public static string ProcessCommand(string command)
+        {
+            //splitting the user's input into parts using the | as a delimiter
+            string[] parts = command.Split('|');
+            //grab the first "part" of the command and determine the action and which method to call
+            string action = parts[0].ToUpper();
+
+            //calling whatever method is needed and sending in the parts as arguments
+            switch (action)
+            {
+                case "LOGIN":
+                    return HandleLogin(parts);
+
+                case "CREATE":
+                    return HandleCreate(parts);
+
+                case "BALANCE":
+                    return HandleBalance(parts);
+
+                case "DEPOSIT":
+                    return HandleDeposit(parts);
+
+                case "WITHDRAW":
+                    return HandleWithdraw(parts);
+
+                case "TRANSFER":
+                    return HandleTransfer(parts);
+
+                default:
+                    return "Error: Invalid input. Please try again.";
+            }
+        }
+
+
+        public static string HandleLogin(string[] parts)
+        {
+
+            string accountNumber = parts[1];
+            //string referenceNumber = parts[2];
+            string password = parts[3];
+
+            //check the list of accounts for matching account number
+            var user = Accounts.FirstOrDefault(a => a.AccountNumber == accountNumber);
+
+            if (user == null)
+                return "ERROR: Invalid account number";
+
+            //if (user.ReferenceNumber != referenceNumber)
+                //return "ERROR: Invalid reference number";
+
+            //if a valid account and reference number is returned, then proceed to check the password
+            if (user.Password != password)
+                return "ERROR: Invalid password";
+
+            //if all checks are passed, then log the user in by setting IsLoggedIn to true
+            user.IsLoggedIn = true;
+            return "Successfully logged in";
+            
+        }
+
+
+
+        public static string HandleCreate(string[] parts)
+        {
+            //sending in the following argument:
+            //$"CREATE|{accountNumber}|{referenceNumber}|{password}"
+
+            string accountNumber = parts[1];
+            string referenceNumber = parts[2];
+            string password = parts[3];
+
+            if (!Accounts.Any(a => a.ReferenceNumber == referenceNumber))
+                return "ERROR: Invalid reference number.";
+
+            Accounts.Add(new Account
+            {
+                AccountNumber = accountNumber,
+                Password = password,
+                ReferenceNumber = referenceNumber,
+                Balance = 0
+            });
+
+
+            // How are we saving accounts? Writing to a file?
+            SaveAccount();
+
+            return $"SUCCESS: Account created. Number: {accountNumber}, Reference: {referenceNumber}";
+        }
+
+
+        public static void SaveAccount()
+        {
+            string json = JsonSerializer.Serialize(Accounts, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(path, json);
+        }
+
+
+        public static void LoadAccounts()
+        {
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                Accounts = JsonSerializer.Deserialize<List<Account>>(json, options);
+                Console.WriteLine("Loaded accounts: " + Accounts.Count);
+            }
+            else
+            {
+                Console.WriteLine("ERROR: Accounts file not found at " + path);
+            }
+        }
+
+
+
+
+
+
 
 
 
