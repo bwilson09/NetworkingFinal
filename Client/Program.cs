@@ -1,10 +1,11 @@
-﻿namespace Client
+﻿namespace BankClient
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            var client = new Client();
+            client.Run();
         }
 
 
