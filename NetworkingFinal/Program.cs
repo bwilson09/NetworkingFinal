@@ -181,7 +181,40 @@ namespace NetworkingFinal
         private static string HandleWithdraw(string[] parts)
         {
             //sending format = "WITHDRAW|{accountNumber}|{amount}"
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+
+            if (parts.Length < 3)
+                return "Error: Invalid input. Please try again.";
+
+            string accountNumber = parts[1].Trim();
+            string amount = parts[2].Trim();
+
+            //validate withdrawal amount
+            if (!decimal.TryParse(amount, out decimal amountValue) || amountValue <= 0)
+                return "Error: Invalid withdrawal amount.";
+
+            //locate the account to withdraw from
+            var account = Accounts.FirstOrDefault(a => a.AccountNumber == accountNumber);
+            if (account == null)
+                return "Error: Account not found.";
+
+            //get balance and check if they have enough money
+            if (account.Balance < amountValue)
+                return "Error: Insufficient funds.";
+
+            //if all checks are passed, then attempt to withdraw the amount and persist, else through error message and clear variable amount
+            account.Balance -= amountValue;
+            try
+            {
+                SaveAccount();
+            }
+            catch (Exception ex)
+            {
+                account.Balance += amountValue;
+                return $"Error: {ex.Message}";
+            }
+
+            return $"Success: Withdrawal completed. New balance: ${account.Balance}";
         }
 
         private static string HandleDeposit(string[] parts)
@@ -220,7 +253,20 @@ namespace NetworkingFinal
         private static string HandleBalance(string[] parts)
         {
             //sending format = "BALANCE|{accountNumber}"
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+
+            if (parts.Length < 2)
+                return "Error: Invalid input. Please try again.";
+
+            string accountNumber = parts[1].Trim();
+
+            //get account number and check if itexists
+            var account = Accounts.FirstOrDefault(a => a.AccountNumber == accountNumber);
+            if (account == null)
+                return "Error: Account not found.";
+
+            //display balance
+            return $"Balance for {accountNumber} is: ${account.Balance}";
         }
 
         public static string HandleLogin(string[] parts)

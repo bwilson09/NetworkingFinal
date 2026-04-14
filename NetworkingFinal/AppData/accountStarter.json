@@ -3,14 +3,21 @@
     "AccountNumber": "104582736",
     "Password": "password",
     "ReferenceNumber": "A4D9K2P",
-    "Balance": 976.00,
+    "Balance": 5000978.00,
     "IsLoggedIn": true
   },
   {
     "AccountNumber": "199277979",
     "Password": "pass",
     "ReferenceNumber": "HMAJYTT",
-    "Balance": 24.00,
-    "IsLoggedIn": false
+    "Balance": 1000.00,
+    "IsLoggedIn": true
+  },
+  {
+    "AccountNumber": "577986345",
+    "Password": "password",
+    "ReferenceNumber": "ZE4JHSM",
+    "Balance": 222.1,
+    "IsLoggedIn": true
   }
 ]
