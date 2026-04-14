@@ -108,11 +108,80 @@ namespace NetworkingFinal
             }
         }
 
+
+
+
+
         private static string HandleTransfer(string[] parts)
         {
             //sending format = "TRANSFER|{accountNumber}|{toAccount}|{amount}|{token}"
-            throw new NotImplementedException();
+
+            //validate for input length
+            if (parts.Length < 5)
+                return "Error: Invalid input. Please try again.";
+
+            //extract values from paramters being sent in
+            string fromAccountNumber = parts[1];
+            string toAccountNumber = parts[2];
+            string amount = parts[3];
+            string token = parts[4];
+
+            //validatation for values being sent in: must be valid parameters
+            if (string.IsNullOrEmpty(fromAccountNumber) || string.IsNullOrEmpty(toAccountNumber))
+                return "Error: Please check account numbers.";
+
+            //can't transfer to the same account
+            if (fromAccountNumber == toAccountNumber)
+                return "Error: Cannot transfer funds to the same account.";
+
+            //cannot transfer =< 0
+            if (!decimal.TryParse(amount, out decimal amountValue) || amountValue <= 0)
+                return "Error: Cannot transfer zero or neagative amounts.";
+
+            // once validation has passed, then check account numbers exist
+            //
+            var fromAccount = Accounts.FirstOrDefault(a => a.AccountNumber == fromAccountNumber);
+            if (fromAccount == null)
+                return $"Error: Account #'{fromAccountNumber}' is invalid.";
+
+            var toAccount = Accounts.FirstOrDefault(a => a.AccountNumber == toAccountNumber);
+            if (toAccount == null)
+                return $"Error: Account #'{toAccountNumber}' is invalid.";
+
+
+            //validating token
+            if (string.IsNullOrWhiteSpace(token) || !token.Equals(fromAccount.ReferenceNumber, StringComparison.Ordinal))
+                return "Error: Invalid transfer token";
+
+            if (fromAccount.Balance < amountValue)
+                return "Error: You don't have enough money.";
+
+            fromAccount.Balance -= amountValue;
+            toAccount.Balance += amountValue;
+            try
+            {
+                //attempt to process tranfers and save to file
+                SaveAccount();
+            }
+            catch (Exception ex)
+            {
+                //reset variables to original values if transfer fails
+                fromAccount.Balance += amountValue;
+                toAccount.Balance -= amountValue;
+                return $"Error: {ex.Message}";
+            }
+
+            //display success message with new values
+            return $"Transfer completed. New balance for {fromAccountNumber}: ${fromAccount.Balance}. New balance for {toAccountNumber}: ${toAccount.Balance}";
         }
+
+    
+
+
+
+
+
+
 
         private static string HandleWithdraw(string[] parts)
         {
