@@ -13,6 +13,7 @@ namespace NetworkingFinal
         public string ReferenceNumber { get; set; }
         public decimal Balance { get; set; }
 
+        //track if user if logged in, used for validation of "logged in commands"
         public bool IsLoggedIn { get; set; }
     }
 }

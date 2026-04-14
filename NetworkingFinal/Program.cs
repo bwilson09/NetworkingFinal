@@ -9,9 +9,9 @@ namespace NetworkingFinal
     public class BankServer
     {
         private static string path = Path.Combine(
-    Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName,
-    "AppData",
-    "accountStarter.json");
+        Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName,
+        "AppData",
+        "accountStarter.json");
 
         public static List<Account> Accounts = new List<Account>();
         public static int Main(string[] args)
@@ -28,7 +28,7 @@ namespace NetworkingFinal
             try
             {
                 //IPAddress ip = IPAddress.Parse("10.0.0.80");
-                IPAddress ip = IPAddress.Any; // use: 127.0.0.1
+                IPAddress ip = IPAddress.Parse("127.0.0.1");
                 IPEndPoint localIP = new IPEndPoint(ip, 10001);
 
                 Socket listener = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -127,7 +127,7 @@ namespace NetworkingFinal
             string amount = parts[3].Trim();
             string token = parts[4] ?? string.Empty;
 
-            //validatation for values being sent in: must be valid parameters
+            //validatation for values being sent in
             if (string.IsNullOrEmpty(fromAccountNumber) || string.IsNullOrEmpty(toAccountNumber))
                 return "Error: Please check account numbers.";
 
@@ -155,18 +155,19 @@ namespace NetworkingFinal
                 return "Error: Invalid transfer token.";
 
             if (fromAccount.Balance < amountValue)
-                return "Error: You don't have enough money.";
+                return "Error: Insufficient funds.";
 
+            //update transfer amounts
             fromAccount.Balance -= amountValue;
             toAccount.Balance += amountValue;
             try
             {
-                //attempt to process tranfers and save to file
+                //persist data by saving new balances to file
                 SaveAccount();
             }
             catch (Exception ex)
             {
-                //reset variables to original values if transfer fails
+                //if there was an error with the save, reset account values and return error string
                 fromAccount.Balance += amountValue;
                 toAccount.Balance -= amountValue;
                 return $"Error: {ex.Message}";
@@ -202,7 +203,7 @@ namespace NetworkingFinal
             if (account.Balance < amountValue)
                 return "Error: Insufficient funds.";
 
-            //if all checks are passed, then attempt to withdraw the amount and persist, else through error message and clear variable amount
+            //if all checks are passed, then attempt to withdraw the amount and persist, else throw error message and clear variable amount
             account.Balance -= amountValue;
             try
             {
@@ -294,8 +295,8 @@ namespace NetworkingFinal
 
             //if all checks are passed, then log the user in by setting IsLoggedIn to true
             user.IsLoggedIn = true;
-            return "SUCCESS: Successfully logged in";
-            
+
+            return $"SUCCESS: Reference Number: {referenceNumber} validated.\nYou are now logged in.";
         }
 
 
