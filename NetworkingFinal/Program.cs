@@ -274,7 +274,6 @@ namespace NetworkingFinal
             //sending format = "LOGIN|{accountNumber}|{password}"
 
             string accountNumber = parts[1];
-
             string password = parts[2];
 
             //check the list of accounts for matching account number
@@ -283,9 +282,13 @@ namespace NetworkingFinal
             if (user == null)
                 return "ERROR: Invalid account number";
 
-           
+            //get reference number and check if it exists
+            //not prompting the client for it but validating that it exists in the account as an extra layer of security to prevent unauthorized access
+            var referenceNumber = user.ReferenceNumber;
+            if (referenceNumber == null)
+                return "ERROR: Invalid reference number";
 
-            //if a valid account and reference number is returned, then proceed to check the password
+            //if a valid account is returned, then proceed to check the password
             if (user.Password != password)
                 return "ERROR: Invalid password";
 
