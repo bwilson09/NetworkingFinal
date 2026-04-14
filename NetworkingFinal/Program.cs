@@ -27,7 +27,8 @@ namespace NetworkingFinal
         {
             try
             {
-                IPAddress ip = IPAddress.Parse("10.0.0.80");
+                //IPAddress ip = IPAddress.Parse("10.0.0.80");
+                IPAddress ip = IPAddress.Any; // use: 127.0.0.1
                 IPEndPoint localIP = new IPEndPoint(ip, 10001);
 
                 Socket listener = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -121,10 +122,10 @@ namespace NetworkingFinal
                 return "Error: Invalid input. Please try again.";
 
             //extract values from paramters being sent in
-            string fromAccountNumber = parts[1];
-            string toAccountNumber = parts[2];
-            string amount = parts[3];
-            string token = parts[4];
+            string fromAccountNumber = parts[1].Trim();
+            string toAccountNumber = parts[2].Trim();
+            string amount = parts[3].Trim();
+            string token = parts[4] ?? string.Empty;
 
             //validatation for values being sent in: must be valid parameters
             if (string.IsNullOrEmpty(fromAccountNumber) || string.IsNullOrEmpty(toAccountNumber))
@@ -150,8 +151,8 @@ namespace NetworkingFinal
 
 
             //validating token
-            if (string.IsNullOrWhiteSpace(token) || !token.Equals(fromAccount.ReferenceNumber, StringComparison.Ordinal))
-                return "Error: Invalid transfer token";
+            if (string.IsNullOrWhiteSpace(token) || token.Length != 12)
+                return "Error: Invalid transfer token.";
 
             if (fromAccount.Balance < amountValue)
                 return "Error: You don't have enough money.";
@@ -172,16 +173,10 @@ namespace NetworkingFinal
             }
 
             //display success message with new values
-            return $"Transfer completed. New balance for {fromAccountNumber}: ${fromAccount.Balance}. New balance for {toAccountNumber}: ${toAccount.Balance}";
+            return $"Token: {token} successfully validated.\nNew balance for {fromAccountNumber}: ${fromAccount.Balance}";
         }
 
     
-
-
-
-
-
-
 
         private static string HandleWithdraw(string[] parts)
         {
@@ -313,16 +308,6 @@ namespace NetworkingFinal
                 Console.WriteLine("ERROR: Accounts file not found at " + path);
             }
         }
-
-
-
-
-
-
-
-
-
-
 
 
 

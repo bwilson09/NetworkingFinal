@@ -164,11 +164,15 @@ namespace BankClient
             //get server response
             string response = ReceiveMessage();
 
-            //show servers reponse
-            Console.WriteLine("\nServer Response: \n" + response);
+            ////show servers reponse
+            //Console.WriteLine("\nServer Response: \n" + response);
 
             //display token number to client as they must give it to receipent
-            Console.WriteLine($"\nTransfer Token: {token}\n Give this token number to the recipent so they can accept the money transfer.");
+            //Console.WriteLine($"\nTransfer Token: {token}\n Give this token number to the recipent so they can accept the money transfer.");
+            Console.WriteLine($"\nTransfer Token: {token}\n");
+
+            //show servers reponse
+            Console.WriteLine("\nServer Response: \n" + response);
         }
 
         private void Withdraw(string? accountNumber)
