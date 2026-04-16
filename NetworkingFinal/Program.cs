@@ -30,6 +30,7 @@ namespace NetworkingFinal
                 //IPAddress ip = IPAddress.Parse("10.0.0.80");
                 //IPAddress ip = IPAddress.Parse("127.0.0.1");
                 IPAddress ip = IPAddress.Parse("10.155.225.239");
+                //IPAddress ip = IPAddress.Parse("10.155.226.119");
                 IPEndPoint localIP = new IPEndPoint(ip, 10001);
 
                 Socket listener = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
