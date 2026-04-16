@@ -17,7 +17,14 @@
     "AccountNumber": "577986345",
     "Password": "password",
     "ReferenceNumber": "ZE4JHSM",
-    "Balance": 222.1,
+    "Balance": 0.1,
+    "IsLoggedIn": true
+  },
+  {
+    "AccountNumber": "297521733",
+    "Password": "password",
+    "ReferenceNumber": "K7CE6AY",
+    "Balance": 721,
     "IsLoggedIn": true
   }
 ]
